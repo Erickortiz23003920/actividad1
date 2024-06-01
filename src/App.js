@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.scss';
 import Item from './Componentes/Item/item';
 import Formulario from './Componentes/Item/form';
@@ -7,9 +6,15 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import AddingMobileButton from './Componentes/Item/addingMobileButton';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import {initAddTodo,} from './reducers/taskSlice'
 function App() {
+  const tasks = useSelector((state) => state.task.value);
+  const option = useSelector((state) => state.option.value);
+  const goals = useSelector((state) => state.goals.value);
+  const dispatch = useDispatch;
+
   return (
     <div className="App">
       <Menu></Menu>
@@ -24,10 +29,18 @@ function App() {
             </div>
             </Row>
               <Row>
-                <div className='scrolling'>
-                  <Item></Item>
-                  <Item></Item>
-                  <Item></Item>
+              <div className='scrolling'>
+                {option === 'tasks' &&
+                  tasks.map((task, index) => (
+                    <Item key={index} name={task.name} description={task.description} dueDate={task.dueDate} id={task.id} />
+                  ))
+                }
+
+                {option === 'goals' &&
+                  goals.map((goal, index) => (
+                   <Item key={index} name={goal.name} description={goal.description} dueDate={goal.dueDate} id={goal.id} />
+                  ))
+                }  
                 </div>
               </Row>
           
